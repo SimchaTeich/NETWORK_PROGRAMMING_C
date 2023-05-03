@@ -16,6 +16,7 @@ int main(int argc, char** argv)
     {
         // fprintf is just like printf but write to specific stream.
         fprintf(stderr, "usage: showip hostname\n");
+        return 1;
     }
 
     // fill the struct addrinfo hints 
@@ -41,13 +42,13 @@ int main(int argc, char** argv)
         // different fields in IPv4 and IPv6:
         if(p->ai_family == AF_INET) // IPv4
         {
-            struct sockaddr_in* ipv4 = (struct sockaddr_in*)p->ai_sockaddr;
+            struct sockaddr_in* ipv4 = (struct sockaddr_in*)p->ai_addr;
             addr = &(ipv4->sin_addr);
             ipver = "IPv4";
         }
         else // IPv6
         {
-            struct sockaddr_in6* ipv6 = (struct sockaddr_in6*)p->ai_sockaddr;
+            struct sockaddr_in6* ipv6 = (struct sockaddr_in6*)p->ai_addr;
             addr = &(ipv6->sin6_addr);
             ipver = "IPv6";
         }
