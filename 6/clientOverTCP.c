@@ -25,7 +25,7 @@ void *get_in_addr(struct sockaddr *sa)
     return &(((struct sockaddr_in6 *)sa)->sin6_addr);
 }
 
-int main()
+int main(int argc, char** argv)
 {
     int sockfd, numbytes;
     char buf[MAXDATASIZE];
@@ -35,7 +35,7 @@ int main()
 
     if(argc != 2)
     {
-        fprintf(stder, "usage: client hostname\n");
+        fprintf(stderr, "usage: client hostname\n");
         exit(1);
     }
 
@@ -50,7 +50,7 @@ int main()
     }
 
     // loop through all the results and connect to the first we can
-    for(p = servinfo, p != NULL; p = p->ai_next)
+    for(p = servinfo; p != NULL; p = p->ai_next)
     {
         if((sockfd = socket(p->ai_family, p->ai_socktype, p->ai_protocol)) == -1)
         {
@@ -74,7 +74,7 @@ int main()
         return 2;
     }
 
-    inet_ntop(p->ai_family, get_in_addr((struct sockaddr *)p->ai_addr, s, sizeof s));
+    inet_ntop(p->ai_family, get_in_addr((struct sockaddr *)p->ai_addr), s, sizeof s);
     printf("client: connect to %s\n", s);
 
     freeaddrinfo(servinfo); // all done with this structure
