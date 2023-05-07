@@ -8,9 +8,9 @@ int main()
     pfds[0].fd = 0;          // Standard input
     pfds[0].events = POLLIN; // Tell me when ready to read
 
-    printf("Hit RETURN or wait 2.5 seconds for timeout\n");
+    printf("Hit RETURN (ENTER) or wait 2.5 seconds for timeout\n");
 
-    int num_events = poll(pfds, 1, 2500) // 2.5 seconds timout
+    int num_events = poll(pfds, 1, 2500); // 2.5 seconds timout
 
     if(num_events == 0)
     {
@@ -26,7 +26,7 @@ int main()
         }
         else
         {
-            pritnf("Unexpected event occurred: %d\n", pfds[0].revents);
+            printf("Unexpected event occurred: %d\n", pfds[0].revents);
         }
     }
 
