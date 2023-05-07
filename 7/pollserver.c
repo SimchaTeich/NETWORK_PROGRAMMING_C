@@ -45,13 +45,13 @@ int get_listener_socket()
         exit(1);
     }
 
-    for(p = ai; p != NULL, p = p->ai_next)
+    for(p = ai; p != NULL; p = p->ai_next)
     {
         listener = socket(p->ai_family, p->ai_socktype, p->ai_protocol);
         if(listener < 0) { continue; }
 
         // Lose the pesky "address already in use" error message
-        setsocktype(listener, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof int);
+        setsockopt(listener, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int));
 
         if(bind(listener, p->ai_addr, p->ai_addrlen) < 0)
         {
@@ -181,7 +181,7 @@ int main()
                 else
                 {
                     // If not a listener, we're just a regular client
-                    int nbytes = recv(pdfs[i].fd, buf, sizeof buf, 0);
+                    int nbytes = recv(pfds[i].fd, buf, sizeof buf, 0);
 
                     int sender_fd = pfds[i].fd;
 
@@ -191,7 +191,7 @@ int main()
                         if(nbytes == 0)
                         {
                             // Connection closed
-                            printf("pollserver: socket %s hung up\n", sender_fd);
+                            printf("pollserver: socket %d hung up\n", sender_fd);
                         }
                         else
                         {
@@ -204,7 +204,7 @@ int main()
                     else
                     {
                         // We got some good data from a client
-                        for(int j = 0; i < fd_count; j++)
+                        for(int j = 0; j < fd_count; j++)
                         {
                             // Send to everyone!
                             int dest_fd = pfds[j].fd;
