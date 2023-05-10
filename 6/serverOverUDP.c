@@ -29,7 +29,7 @@ void *get_in_addr(struct sockaddr *sa)
 int main()
 {
     int sockfd;
-    struct sockaddr hints, *servinfo, *p;
+    struct addrinfo hints, *servinfo, *p;
     int rv;
     int numbytes;
     struct sockaddr_storage their_addr;
@@ -40,7 +40,7 @@ int main()
     memset(&hints, 0, sizeof hints);
     hints.ai_family = AF_INET6;
     hints.ai_socktype = SOCK_DGRAM;
-    hints.ai_flag = AI_PASSIVE;
+    hints.ai_flags = AI_PASSIVE;
 
     if((rv = getaddrinfo(NULL, MYPORT, &hints, &servinfo)) != 0)
     {

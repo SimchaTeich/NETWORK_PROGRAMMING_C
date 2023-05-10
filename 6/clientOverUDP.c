@@ -14,7 +14,7 @@
 int main(int argc, void *argv[])
 {
     int sockfd;
-    struct sockaddr hints, *servinfo, *p;
+    struct addrinfo hints, *servinfo, *p;
     int rv;
     int numbytes;
     
@@ -51,15 +51,15 @@ int main(int argc, void *argv[])
         return 2;
     }
 
-    if((numbytes = sendto(sockfd, argv[2], strlen(argv[2], 0, p->ai_addr, p->ai_addrlen))) == -1)
+    if((numbytes = sendto(sockfd, argv[2], strlen(argv[2]), 0, p->ai_addr, p->ai_addrlen)) == -1)
     {
         perror("talker: sendto");
-        break;
+        exit(1);
     }
 
     freeaddrinfo(servinfo);
 
-    printf("talker: sent %d bytes to %s\n", numbytes, argv[1]);
+    printf("talker: sent %d bytes to %s\n", numbytes, (char *)argv[1]);
     close(sockfd);
 
     return 0;
